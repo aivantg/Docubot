@@ -2,3 +2,4 @@
 venv
 .env
 *.db
+.vs_code
