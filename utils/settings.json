@@ -15,7 +15,7 @@
       "fieldNames": {
         "title": "Idea",
         "priority": "Importance",
-        "user": "Author"
+        "user": "Contact"
       }
     },
     "references": {
@@ -33,7 +33,7 @@
       "fieldNames": {
         "title": "Title",
         "priority": "Importance",
-        "user": "Contact",
+        "user": "Sourcer",
         "link": "Link"
       }
     }
