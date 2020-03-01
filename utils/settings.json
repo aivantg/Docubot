@@ -3,7 +3,7 @@
     "ideas": {
       "messageTrigger": "all",
       "mode": "auto",
-      "notionBaseUrl": "https://www.notion.so/withprimer/0f48f4075423407390f99214db3dc6bf?v=f88e7fa4a2e14658be434bec68e9db9d",
+      "notionBaseUrl": "https://www.notion.so/withprimer/b28e3c71dfbf434e85f82e76fbb1290b?v=850f23df33364f5d8322a40b86c572bd",
       "reactions": {
         "ack": "bulb",
         "normalPriority": "heavy_plus_sign",
@@ -19,7 +19,7 @@
       }
     },
     "references": {
-      "notionBaseUrl": "https://www.notion.so/withprimer/ce249a64e8524c79baaef8dbe565763b?v=4540f17ca3d1432192bb0f927305a8ed",
+      "notionBaseUrl": "https://www.notion.so/withprimer/ee4e56f0eb8242b591d3e5d872a8bb7f?v=1fb32bfe8b4a40c9b40ae6616a0558f9",
       "messageTrigger": "link",
       "mode": "auto",
       "reactions": {
@@ -33,7 +33,7 @@
       "fieldNames": {
         "title": "Title",
         "priority": "Importance",
-        "user": "Sourcer",
+        "user": "Contact",
         "link": "Link"
       }
     }
