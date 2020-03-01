@@ -1,0 +1,12 @@
+{
+  "notionBase": "withprimer",
+  "channelRules": {
+    "ideas": {
+      "messageTriggers": { "message": "1234" }
+    },
+    "references": {
+      "messageTriggers": ["link"],
+      "reactionTriggers": ["➕"]
+    }
+  }
+}

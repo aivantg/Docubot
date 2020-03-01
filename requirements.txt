@@ -1,0 +1,7 @@
+Flask
+notion
+slackeventsapi
+slackclient
+python-dotenv
+pprint
+peewee
