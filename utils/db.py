@@ -7,7 +7,7 @@ import urllib.parse as urlparse
 print("DB TESTING")
 print(os.environ)
 
-if 'HEROKU' in os.environ:
+if 'DATABASE_URL' in os.environ:
     import psycopg2
     urlparse.uses_netloc.append('postgres')
     url = urlparse.urlparse(os.environ["DATABASE_URL"])
