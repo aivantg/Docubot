@@ -1,4 +1,5 @@
 from notion.client import NotionClient
+from notion.block import ToggleBlock, BulletedListBlock
 from dotenv import load_dotenv
 import os
 
@@ -14,17 +15,22 @@ def create_notion_row(databaseUrl, properties):
     row = db.collection.add_row()
     for key, value in properties.items():
         setattr(row, key, value)
-    return row.id
+    slack_discussion = row.children.add_new(ToggleBlock, title="**Slack Discussion**")
+    return row.id, slack_discussion.id, row.get_browseable_url()
 
-def delete_notion_row(databaseUrl, rowId):
+def delete_notion_row(rowId):
     client.get_block(rowId).remove()
 
-def add_comment_to_notion_row(databaseUrl, rowId):
-    pass
+def add_comment_to_notion_row(rowId, discussionId, comment, user):
+    row = client.get_block(rowId)
+    discussion = [b for b in row.children if b.id == discussionId]
+    if len(discussion):
+        discussion[0].children.add_new(BulletedListBlock, title=user + ": " + comment)
+    else:
+        print("Can't find Slack Discussion Toggle")
 
 def update_properties_on_notion_row(databaseUrl, rowId, properties):
     row = client.get_block(rowId)
     for key, value in properties.items():
         setattr(row, key, value)
 
-# create_row('https://www.notion.so/withprimer/0f48f4075423407390f99214db3dc6bf?v=f88e7fa4a2e14658be434bec68e9db9d', {'title': 'Hello!', 'link': 'https://www.google.com'})

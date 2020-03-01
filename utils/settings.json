@@ -1,11 +1,10 @@
 {
-  "notionBase": "withprimer",
   "channelRules": {
     "ideas": {
       "messageTrigger": "all",
       "notionBaseUrl": "https://www.notion.so/withprimer/0f48f4075423407390f99214db3dc6bf?v=f88e7fa4a2e14658be434bec68e9db9d",
       "reactions": {
-        "ack": "floppy_disk",
+        "ack": "bulb",
         "normalPriority": "heavy_plus_sign",
         "highPriority": "exclamation",
         "veryHighPriority": "bangbang",
@@ -19,7 +18,7 @@
       }
     },
     "references": {
-      "notionBaseUrl": "https://www.notion.so/withprimer/0f48f4075423407390f99214db3dc6bf?v=f88e7fa4a2e14658be434bec68e9db9d",
+      "notionBaseUrl": "https://www.notion.so/withprimer/ce249a64e8524c79baaef8dbe565763b?v=4540f17ca3d1432192bb0f927305a8ed",
       "messageTrigger": "link",
       "reactions": {
         "ack": "floppy_disk",
@@ -31,7 +30,7 @@
       },
       "fieldNames": {
         "title": "Title",
-        "priority": "Relevance",
+        "priority": "Importance",
         "user": "Sourcer",
         "link": "Link"
       }

@@ -5,3 +5,4 @@ slackclient
 python-dotenv
 pprint
 peewee
+bs4
