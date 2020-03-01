@@ -70,7 +70,7 @@ def save_message_to_notion(ts, channel, text, user, priority, link, channel_sett
 
 def remove_message_from_notion(message, channel_settings):
     unreact_message(message.channel, message.ts, channel_settings['reactions']['ack'])
-    delete_notion_row(channel_settings['notionBaseUrl'], message.notion_row_id)
+    delete_notion_row(message.notion_row_id)
     remove_message(message.channel, message.notion_link_ts)
     untrack_message(message.ts, message.channel)
 
