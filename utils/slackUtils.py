@@ -98,6 +98,8 @@ def process_message(text, channel, ts, user, thread_ts, channel_settings):
         if message:
             add_comment_to_notion_row(message.notion_row_id, message.slack_discussion_node, text, get_username(user))
     else:
+        if channel_settings['mode'] == 'manual': # Only process messages from reacts
+            return
         trigger = channel_settings['messageTrigger']
         if trigger == 'link':
             text, link = process_link_message(text)
@@ -123,7 +125,14 @@ def process_reaction(reaction, channel, ts, user, channel_settings):
         if reaction == reacts['saveMessage']:
             slack_message = get_slack_message(channel, ts)
             text, user = slack_message['text'], slack_message['user']
-            save_message_to_notion(ts, channel, text, get_username(user), 'Normal', None, channel_settings)
+            trigger = channel_settings['messageTrigger']
+            if trigger == 'link':
+                text, link = process_link_message(text)
+                if not link: # only process messages with links
+                    return
+            else:
+                link = None
+                save_message_to_notion(ts, channel, text, get_username(user), 'Normal', None, channel_settings)
 
 
 def receive_message(event):

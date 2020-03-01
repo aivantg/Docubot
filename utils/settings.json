@@ -2,6 +2,7 @@
   "channelRules": {
     "ideas": {
       "messageTrigger": "all",
+      "mode": "auto",
       "notionBaseUrl": "https://www.notion.so/withprimer/0f48f4075423407390f99214db3dc6bf?v=f88e7fa4a2e14658be434bec68e9db9d",
       "reactions": {
         "ack": "bulb",
@@ -20,6 +21,7 @@
     "references": {
       "notionBaseUrl": "https://www.notion.so/withprimer/ce249a64e8524c79baaef8dbe565763b?v=4540f17ca3d1432192bb0f927305a8ed",
       "messageTrigger": "link",
+      "mode": "auto",
       "reactions": {
         "ack": "floppy_disk",
         "normalPriority": "heavy_plus_sign",

@@ -4,11 +4,14 @@ import os
 import urllib.parse as urlparse
 
 
+print("DB TESTING")
+print(os.environ)
 
 if 'HEROKU' in os.environ:
     import psycopg2
     urlparse.uses_netloc.append('postgres')
     url = urlparse.urlparse(os.environ["DATABASE_URL"])
+    print(url)
     db = PostgresqlDatabase(database=url.path[1:], user=url.username, password=url.password, host=url.hostname, port=url.port)
 else:
     db = SqliteDatabase('bot.db')
