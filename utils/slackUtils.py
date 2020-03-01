@@ -17,8 +17,9 @@ BOT_ID = client.auth_test()['user_id']
 # Translate channels in settings.json from name to ID
 with open('utils/settings.json') as f:
   settings = json.load(f)
-  data = r.get("https://slack.com/api/conversations.list?token=" + SLACK_TOKEN).json()
-  watched_channels = {c['id']: c['name'] for c in data['channels'] if settings['channelRules'].get(c['name'])}
+
+data = r.get("https://slack.com/api/conversations.list?token=" + SLACK_TOKEN).json()
+watched_channels = {c['id']: c['name'] for c in data['channels'] if settings['channelRules'].get(c['name'])}
   
 # Utility Functions
 def send_message(channel, message, thread_ts=None):
@@ -51,49 +52,77 @@ def get_username(userId):
 def get_slack_message(channel, ts):
     return client.conversations_history(latest=ts, channel=channel, limit=1, inclusive="True")['messages'][0]
 
-def save_message_to_notion(ts, channel, parameters):
-    react_message(channel, ts, 'floppy_disk')
-    row_id = create_notion_row(IDEAS_DB, parameters)
-    notion_link_ts = send_message(channel, "Notion Link: https://www.notion.so/withprimer/" + row_id, ts)
+def save_message_to_notion(ts, channel, text, user, priority, link, channel_settings):
+    # Create Row in Notion Database
+    names = channel_settings['fieldNames']
+    row_data = { names['title']: text, names['user']: user, names['priority']: priority }
+    if link:
+        row_data[names['link']] = link
+    row_id = create_notion_row(channel_settings['notionBaseUrl'], row_data)
+
+    # Share info in Slack
+    react_message(channel, ts, channel_settings['reactions']['ack'])
+    notion_link_ts = send_message(channel, "Notion Link: https://www.notion.so/" + settings['notionBase'] + "/" + row_id, ts)
+    
+    # Save Tracked Message to Database
     track_message(ts, channel, row_id, notion_link_ts)
 
-def remove_message_from_notion(message):
-    unreact_message(message.channel, message.ts, 'floppy_disk')
-    delete_notion_row(IDEAS_DB, message.notion_row_id)
+def remove_message_from_notion(message, channel_settings):
+    unreact_message(message.channel, message.ts, channel_settings['reactions']['ack'])
+    delete_notion_row(channel_settings['notionBaseUrl'], message.notion_row_id)
     remove_message(message.channel, message.notion_link_ts)
     untrack_message(message.ts, message.channel)
 
-def set_priority(message, priority):
-    update_properties_on_notion_row(IDEAS_DB, message.notion_row_id, {"Importance": priority})
+def set_priority(message, priority, channel_settings):
+    priority_data = {channel_settings['fieldNames']['priority']: priority}
+    update_properties_on_notion_row(channel_settings['notionBaseUrl'], message.notion_row_id, priority_data)
 
 # Event Handlers
-def process_message(event):
-    text, channel, ts, user, thread_ts = event.get('text'), event.get('channel'), event.get('ts'), event.get('user'), event.get('thread_ts')
-    if channel in watched_channels and user and user != BOT_ID:
-        if thread_ts:
+
+def process_message(text, channel, ts, user, thread_ts, channel_settings):
+    if thread_ts:
             message = find_tracked_message(thread_ts, channel)
             if message:
-                # TODO: Figure out how to save comments in threads
+                # TODO: Figure out how to save threaded message on the notion page
                 # add_comment_to_notion_row(IDEAS_DB, message.notion_row_id)
                 pass
-        else:
-            save_message_to_notion(ts, channel, {'idea': text, 'author': get_username(user), 'Importance': 'Normal'})
+    else:
+        save_message_to_notion(ts, channel, text, get_username(user), 'Normal', None, channel_settings)
+
+def process_reaction(reaction, channel, ts, user, channel_settings):
+    names, reacts = channel_settings['fieldNames'], channel_settings['reactions']
+    message = find_tracked_message(ts, channel)
+    if message:
+        if reaction == reacts['unsaveMessage']:
+            remove_message_from_notion(message, channel_settings)
+        if reaction == reacts['normalPriority']:
+            set_priority(message, "Normal", channel_settings)
+        if reaction == reacts['highPriority']:
+            set_priority(message, "High", channel_settings)
+        if reaction == reacts['veryHighPriority']:
+            set_priority(message, "Very High", channel_settings)
+    else:
+        if reaction == reacts['saveMessage']:
+            slack_message = get_slack_message(channel, ts)
+            text, user = slack_message['text'], slack_message['user']
+            save_message_to_notion(ts, channel, text, get_username(user), 'Normal', None, channel_settings)
 
 
-def process_reaction(event):
+def receive_message(event):
+    if not event.get('text'): # Edge case
+        return 
+    text, channel, ts, user, thread_ts = event['text'], event['channel'], event['ts'], event['user'], event.get('thread_ts')
+    channel_name = watched_channels.get(channel)
+    if user and user != BOT_ID and channel_name:
+        channel_settings = settings['channelRules'][channel_name]
+        process_message(text, channel, ts, user, thread_ts, channel_settings)
+        
+
+
+def receive_reaction(event):
     reaction, channel, user, ts = event['reaction'], event['item']['channel'], event['user'], event['item']['ts']
-    if channel in watched_channels and user != BOT_ID:
-        message = find_tracked_message(ts, channel)
-        if message:
-            if reaction == 'outbox_tray':
-                remove_message_from_notion(message)
-            if reaction == 'exclamation':
-                set_priority(message, "High")
-            if reaction == "bangbang":
-                set_priority(message, "Very High")
-        else:
-            if reaction == 'inbox_tray':
-                slack_message = get_slack_message(channel, ts)
-                text, user = slack_message['text'], slack_message['user']
-                save_message_to_notion(ts, channel, {'idea': text, 'author': get_username(user), 'Importance': 'Normal'})
-
+    channel_name = watched_channels.get(channel)
+    if user and user != BOT_ID and channel_name:
+        channel_settings = settings['channelRules'][channel_name]
+        process_reaction(reaction, channel, ts, user, channel_settings)
+        

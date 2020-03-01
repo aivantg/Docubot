@@ -2,7 +2,7 @@ from flask import Flask
 from slackeventsapi import SlackEventAdapter
 from dotenv import load_dotenv
 import os
-from utils.slackUtils import process_message, process_reaction
+from utils.slackUtils import receive_message, receive_reaction
 from utils.db import setup_db
 
 setup_db()
@@ -17,11 +17,11 @@ slack_events_adapter = SlackEventAdapter(SLACK_SIGNING_SECRET, "/events", app)
 # Create an event listener for "reaction_added" events and print the emoji name
 @slack_events_adapter.on('message')
 def message(event):
-    process_message(event['event'])
+    receive_message(event['event'])
 
 @slack_events_adapter.on("reaction_added")
 def reaction_added(event):
-    process_reaction(event['event'])
+    receive_reaction(event['event'])
 
 
 # Start the server on port 3000
