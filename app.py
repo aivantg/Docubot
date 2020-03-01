@@ -23,7 +23,10 @@ def message(event):
 def reaction_added(event):
     receive_reaction(event['event'])
 
+port = os.getenv("PORT")
+if not port:
+    port = 3000
 
 # Start the server on port 3000
 if __name__ == "__main__":
-    app.run(port=3000)
+    app.run(port=port)
