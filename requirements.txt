@@ -7,3 +7,4 @@ pprint
 peewee
 bs4
 gunicorn
+psycopg2
