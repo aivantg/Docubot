@@ -1,6 +1,6 @@
-# 🤖 PrimerBot
+# 🤖 DocuBot
 
-A Slackbot that makes documentation easier! PrimerBot connects to a channel and automatically sends messages in a slack channel to a linked Notion database. 
+A Slackbot that makes documentation easier! DocuBot connects to a channel and automatically sends messages in a slack channel to a linked Notion database. 
 
 **Features:**
 - Supports two message parsing modes: 'all' (all messages get sent) and 'link' (only messages with URLs get sent)
@@ -63,7 +63,7 @@ Sample Settings.json file:
 {
   "channelRules": {
     "references": {
-      "notionBaseUrl": "https://www.notion.so/withprimer/ce249a64e8524c79baaef8dbe565763b?v=4540f17ca3d1432192bb0f927305a8ed",
+      "notionBaseUrl": "https://www.notion.so/....",
       "messageTrigger": "link",
       "reactions": {
         "ack": "floppy_disk",
@@ -83,21 +83,21 @@ Sample Settings.json file:
   }
 }
 ```
-For each channel that you want PrimerBot to watch, add a new property in `channelRules` with the name of the channel. Below is an explanation of each of the properties for each channel
+For each channel that you want Docubot to watch, add a new property in `channelRules` with the name of the channel. Below is an explanation of each of the properties for each channel
 
 `notionBaseUrl`: This is the URL of the database you want to send data to (right-click and press "copy link" to get this URL from notion)
 
-`messageTrigger`: This determines which type of messages PrimerBot will respond to. Options are "all" (which sends all messages) and "link" (which only sends messages with links)
+`messageTrigger`: This determines which type of messages Docubot will respond to. Options are "all" (which sends all messages) and "link" (which only sends messages with links)
 
-`reactions`: Emojis used to react and control Primerbot
+`reactions`: Emojis used to react and control Docubot
 
-- `ack`: This is the emoji Primerbot uses to note that it has saved a message in notion
+- `ack`: This is the emoji Docubot uses to note that it has saved a message in notion
 - `Xpriority`: These three emojis are used to denote the priority of a row 
 - `saveMessage`: This emoji react can be used to save an otherwise untracked message in Slack (it will not pick up existing threaded messages)
 - `unsaveMessage`: This emoji react can be used to unsave a currently tracked message in Slack
 
 
-`fieldNames`: PrimerBot sends data to notion using these column titles
+`fieldNames`: Docubot sends data to notion using these column titles
 
 - `title`: This is the primary key of the table. When `messageTrigger` is set to Link, this will be the title of the URL. Otherwise it'll just be the message
 - `priority`: Column name for priority delineation. Must be a single-select with options "Normal", "High", and "Very High" in Notion
