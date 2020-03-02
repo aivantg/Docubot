@@ -1,6 +1,5 @@
 Flask
 notion
-slackeventsapi
 slackclient
 python-dotenv
 pprint
@@ -8,3 +7,4 @@ peewee
 bs4
 gunicorn
 psycopg2
+pyee==6.0.0
