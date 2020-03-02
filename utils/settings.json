@@ -3,7 +3,7 @@
     "ideas": {
       "messageTrigger": "all",
       "mode": "auto",
-      "notionBaseUrl": "https://www.notion.so/withprimer/b28e3c71dfbf434e85f82e76fbb1290b?v=850f23df33364f5d8322a40b86c572bd",
+      "notionBaseUrl": "https://www.notion.so/...",
       "reactions": {
         "ack": "bulb",
         "normalPriority": "heavy_plus_sign",
@@ -19,7 +19,7 @@
       }
     },
     "references": {
-      "notionBaseUrl": "https://www.notion.so/withprimer/ee4e56f0eb8242b591d3e5d872a8bb7f?v=1fb32bfe8b4a40c9b40ae6616a0558f9",
+      "notionBaseUrl": "https://www.notion.so/...",
       "messageTrigger": "link",
       "mode": "auto",
       "reactions": {
