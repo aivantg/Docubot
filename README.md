@@ -1,6 +1,6 @@
-# 🤖 DocuBot
+# 🤖 Docubot
 
-A Slackbot that makes documentation easier! DocuBot connects to a channel and automatically sends messages in a slack channel to a linked Notion database. 
+A Slackbot that makes documentation easier! Docubot connects to a channel and automatically sends messages in a slack channel to a linked Notion database. 
 
 **Features:**
 - Supports two message parsing modes: 'all' (all messages get sent) and 'link' (only messages with URLs get sent)
